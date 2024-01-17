@@ -6,4 +6,6 @@ Porfavor lea siga detalladamente las instrucciones que se encuentran tanto en es
 
 ➡️ Una vez finalizada la prueba, suba el link del video de soporte dentro de la carpeta soportes en un bloc de notas, tambien puede añadir imagenes del resultado final si lo desea.
 
+➡️ Realice un PULL REQUEST explicando las generalidades del codigo como el lenguje utilizado, y las información que considere correcta para describir mejor su trabajo.
+
 ➡️ Envíe el link de la rama por correo electronico respondiendo al correo en el que recibió la prueba.
