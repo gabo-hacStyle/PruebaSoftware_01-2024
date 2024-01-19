@@ -1,2 +1,4 @@
 Lib/*
 Scripts/*
+api/api_rest/__pycache__/**
+api/api_rest/migrations/__pycache__/*

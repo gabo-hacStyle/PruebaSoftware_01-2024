@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 #from rest_framework import permissions
-from .models import User
-from .serializers import UserSerializer
+from .models import User, Data
+from .serializers import UserSerializer, DataSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -51,3 +51,16 @@ class LoginView(APIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         })
+
+class DataView(APIView):
+    def get(self, request):
+        data = Data.objects.all()
+        serializer = DataSerializer(data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = Data()
+        data.save()
+        serializer = DataSerializer(data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
