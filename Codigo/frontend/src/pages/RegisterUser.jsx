@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { postUser } from '../hooks/useGetApi';
+import UserCreated from '../modals/UserCreated';
 
 const RegisterUser = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -18,23 +20,24 @@ const RegisterUser = () => {
         setEmail(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/users/',
-            {
-                username: username,
-                email: email,
-                password: password,
-            }
-            ).then((response) => {
-            console.log(response.data);
-            }).catch((error) => {
-                console.log(error);
-            });
+        const response = await postUser({ username, password, email });
+        if (response.message === "User created") {
+            setShowModal(true);
+        }
     };
 
     return (
         <div>
+            
+            {showModal && (
+                <div>
+                    <UserCreated />
+                </div>
+            )}
+
             <h2>Registro de Usuario</h2>
             <form onSubmit={handleSubmit}>
                 <div>
