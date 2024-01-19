@@ -1,39 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginUser = () => {
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:8000/login/', { username, password });
+            console.log(response.data);
+    
+            // Almacenar los tokens en localStorage
+            localStorage.setItem('access-token', response.data['access']);
+            localStorage.setItem('refresh-token', response.data['refresh']);
+    
+            console.log(username)
+            debugger 
+            // Redirigir al usuario a la página de usuario
+            navigate(
+                '/dashboard', {state: { username }}
+            ); // Pasar el nombre del usuario como prop a través del estado de la ruta
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-            <div className="bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-4">Login</h2>
-                <form>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-gray-700 font-bold mb-2">
-                            Usuario
-                        </label>
+        <div>
+            <div>
+                <h2>Login</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="username">Usuario</label>
                         <input
                             type="text"
                             id="username"
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             placeholder="Ingrese su usuario"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                            Contraseña
-                        </label>
+                    <div>
+                        <label htmlFor="password">Contraseña</label>
                         <input
                             type="password"
                             id="password"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                             placeholder="Ingrese su contraseña"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600"
-                    >
-                        Iniciar sesión
-                    </button>
+                    <button type="submit">Iniciar sesión</button>
                 </form>
             </div>
         </div>

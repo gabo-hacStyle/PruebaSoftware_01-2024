@@ -1,10 +1,19 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const UserDashboard = () => {
-    const username = 'John Doe'; // Aquí puedes obtener el nombre de usuario desde tu lógica de autenticación
+    const location = useLocation();
+    const username = location.state.username;
+    console.log(username)
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Lógica para cerrar sesión
+        // Eliminar los tokens de localStorage
+        localStorage.removeItem('access-token');
+        localStorage.removeItem('refresh-token');
+
+        // Redirigir al username a la página de inicio de sesión
+        navigate('/login');
     };
 
     return (
@@ -13,7 +22,11 @@ const UserDashboard = () => {
                 <h1>Bienvenido, {username}</h1>
                 <button onClick={handleLogout}>Cerrar sesión</button>
             </header>
-            {/* Resto del contenido de la pantalla */}
+            
+            <main>
+                <p>¡Bienvenido a su página de username!</p>
+            </main>
+
         </div>
     );
 };

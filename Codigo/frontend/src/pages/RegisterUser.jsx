@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const RegisterUser = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -12,9 +14,23 @@ const RegisterUser = () => {
         setPassword(e.target.value);
     };
 
+    const handleEmailChange = (e) => { 
+        setEmail(e.target.value);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aquí puedes agregar la lógica para enviar los datos del nuevo usuario al servidor
+        axios.post('http://localhost:8000/users/',
+            {
+                username: username,
+                email: email,
+                password: password,
+            }
+            ).then((response) => {
+            console.log(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -37,6 +53,15 @@ const RegisterUser = () => {
                         id="password"
                         value={password}
                         onChange={handlePasswordChange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={handleEmailChange}
                     />
                 </div>
                 <button type="submit">Registrarse</button>
