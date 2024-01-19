@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-
+    
 class DataSerializer(serializers.ModelSerializer):
     date = serializers.DateField(input_formats=['%d/%m/%Y'], required=False)
 

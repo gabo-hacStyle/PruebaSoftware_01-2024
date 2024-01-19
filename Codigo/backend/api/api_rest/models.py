@@ -25,10 +25,11 @@ class User(AbstractBaseUser):
 
 class Data(models.Model):
     date = models.DateField()
-    value = models.DecimalField(max_digits=4, decimal_places=1, validators=[MinValueValidator(24.0), MaxValueValidator(29.9)])
+    value = models.DecimalField(max_digits=4, decimal_places=1, validators=[MinValueValidator(24.0), MaxValueValidator(29.91)])
 
     def save(self, *args, **kwargs):
-            if not self.id:
-                self.date = Data.objects.latest('date').date + timedelta(days=1) if Data.objects.exists() else date(2024, 1, 1)
-                self.value = round(random.uniform(24.0, 29.9), 1)
-                super().save(*args, **kwargs)
+        if not self.id:
+            self.date = Data.objects.latest('date').date + timedelta(days=1) if Data.objects.exists() else date(2024, 1, 1)
+            self.value = round(random.uniform(24.0, 29.9), 1)
+        super().save(*args, **kwargs)
+

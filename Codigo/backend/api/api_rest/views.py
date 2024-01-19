@@ -9,6 +9,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 
+import base64
+import matplotlib.pyplot as plt
+from io import BytesIO
+
 
 # Create your views here.
 
@@ -56,11 +60,27 @@ class DataView(APIView):
     def get(self, request):
         data = Data.objects.all()
         serializer = DataSerializer(data, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        plot_base64 = self.plot(data)
+        return Response({'data': serializer.data, 'plot': plot_base64}, status=status.HTTP_200_OK)
 
     def post(self, request):
         data = Data()
         data.save()
         serializer = DataSerializer(data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    def plot(self, data):
+        dates = [d.date for d in data]
+        values = [d.value for d in data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(dates, values)
+        plt.xlabel('Date')
+        plt.ylabel('Value')
+
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        plot_base64 = base64.b64encode(buf.getvalue()).decode()
+        return plot_base64
 
