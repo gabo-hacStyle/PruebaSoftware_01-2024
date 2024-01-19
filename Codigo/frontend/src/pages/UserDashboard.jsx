@@ -6,7 +6,7 @@ import Plot from '../components/plot';
 
 const UserDashboard = () => {
     const location = useLocation();
-    const username = location.state.username;
+    const [username, setUsername] = useState('');
     const navigate = useNavigate();
     const [data, setData]  = useState([]);
     const [imageData, setImageData] = useState(''); // Assuming the response contains base64 data
@@ -38,8 +38,13 @@ const UserDashboard = () => {
         };
         bringData();   
     }, []);
-
     useEffect(() => {
+        //Verificar si hay algun estado en el location, o sino pa fuera
+        if (location.state ===  null || location.state === undefined || !location.state.username ) {
+            navigate('/login');
+        } else {
+            setUsername(location.state.username);
+        }
         // Verificar si existe el token de acceso en localStorage
         const accessToken = localStorage.getItem('access-token');
         if (!accessToken) {
@@ -51,16 +56,18 @@ const UserDashboard = () => {
     return (
         <div>
             <header>
-                <h1>Bienvenido, {username}</h1>
-                <button onClick={handleLogout}>Cerrar sesión</button>
+                <h2 className='h2' style={{marginBottom: '3px'}}>Bienvenido, {username}</h2>
+                <button style={{padding: "5px 15px"}} onClick={handleLogout}>Cerrar sesión</button>
             </header>
             
             <main>
-                <p>¡Bienvenido a su página de usuario!</p>
+                
+                <div style={{marginTop: "17px"}}>
+                    <Plot image_url={imageData} />
+                </div>
+                
 
-                <Plot image_url={imageData} />
-
-                <button onClick={generateData}>Generar dato!</button>
+                <button style={{margin: "15px"}} onClick={generateData}>Generar dato!</button>
 
                 <Table data={data}/>
             </main>

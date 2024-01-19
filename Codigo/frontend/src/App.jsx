@@ -22,21 +22,6 @@ function App() {
   return (
     <>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/dashboard">User</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-            </ul>
-          </nav>
-
           <Routes>
             <Route path="/dashboard" element={<UserDashboard />}>
               
@@ -48,7 +33,6 @@ function App() {
               
             </Route>
           </Routes>
-        </div>
       </Router>
     </>
   )

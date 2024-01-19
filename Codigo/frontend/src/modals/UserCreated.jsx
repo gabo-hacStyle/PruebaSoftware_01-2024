@@ -11,8 +11,10 @@ const UserCreated = () => {
     <div>
         <div>
             <h2>¡Usuario creado exitosamente!</h2>
+
+            <p style={{margin: '10px'}}>Ahora ya te puedes logear sin problema</p>
             
-            <button onClick={handleClick}>Ok</button>
+            <button style={{marginBottom: '10px'}}onClick={handleClick}>Ok</button>
         </div>
     </div>
   )

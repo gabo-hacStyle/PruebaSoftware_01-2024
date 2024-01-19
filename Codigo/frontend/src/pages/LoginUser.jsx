@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { postLogin } from '../hooks/useGetApi';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
 const LoginUser = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [errorModal, setErrorModal] = useState(false);
+    const [invalidCredetials, setInvalidCredetials] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,9 +40,10 @@ const LoginUser = () => {
             ); // Pasar el nombre del usuario como prop a través del estado de la ruta
         } catch (error) {
             console.error(error);
+            console.log(error.response.data.error)
 
-            if (error.error === "Invalid username or password") {
-                setErrorModal(true);
+            if (error.response.data.error === "Invalid username or password") {
+                setInvalidCredetials(true);
             }
         }
 
@@ -56,19 +56,13 @@ const LoginUser = () => {
     return (
         <div>
             <div>
-                {
-                    errorModal && (
-                        <div>
-                            <h2>Usuario o contraseña incorrectos</h2>
-                            <button onClick={() => setErrorModal(false)}>Ok</button>
-                        </div>
-                    )
-                }
-                <h2>Login</h2>
+                
+                <h2 className='h2'>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="username">Usuario</label>
                         <input
+                            className='input'
                             type="text"
                             id="username"
                             placeholder="Ingrese su usuario"
@@ -80,6 +74,7 @@ const LoginUser = () => {
                     <div>
                         <label htmlFor="password">Contraseña</label>
                         <input
+                            className='input'
                             type="password"
                             id="password"
                             placeholder="Ingrese su contraseña"
@@ -88,8 +83,17 @@ const LoginUser = () => {
                             style={{ borderColor: passwordError ? 'red' : '' }}
                         />
                     </div>
+                    
+                    {
+                        invalidCredetials && (
+                            <p style={{ color: 'red' }}>Usuario o contraseña incorrectos</p>
+                        )
+                    }
+
                     <button type="submit">Iniciar sesión</button>
+                    <p style={{ fontSize: 'small' }}>¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link></p>
                 </form>
+                
             </div>
         </div>
     );

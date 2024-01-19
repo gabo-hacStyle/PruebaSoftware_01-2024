@@ -30,7 +30,7 @@ export const postUser = async (user) => {
         const response = await axios.post(`${baseUrl}/users/`, user);
         return response.data;
     } catch (error) {
-        console.error(error);
+        
         throw error;
     }
 }
