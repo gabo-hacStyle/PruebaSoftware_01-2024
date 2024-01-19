@@ -5,12 +5,18 @@ import {fetchData, postData} from '../hooks/useGetApi';
 import Plot from '../components/plot';
 
 const UserDashboard = () => {
+    //Para traer el estado de la ruta: username 
     const location = useLocation();
+    // Estado para almacenar el nombre de usuario
     const [username, setUsername] = useState('');
+    // Hook para redirigir al usuario a otra página -> login al hacer logout
     const navigate = useNavigate();
+    //Estado para almacenar los datos de la tabla
     const [data, setData]  = useState([]);
-    const [imageData, setImageData] = useState(''); // Assuming the response contains base64 data
-
+    //Estado para almacenar los datos de la grafica
+    const [imageData, setImageData] = useState(''); 
+   
+    // Función para manejar el logout
     const handleLogout = () => {
         // Eliminar los tokens de localStorage
         localStorage.removeItem('access-token');
@@ -20,6 +26,7 @@ const UserDashboard = () => {
         navigate('/login');
     };
 
+    //Funcion para manejar cuando se oprime el boton de generar dato
     const generateData = async () => {
         // Hacer la solicitud POST
         await postData();
@@ -30,6 +37,7 @@ const UserDashboard = () => {
         setImageData(response.plot)
     };
 
+    //Funcion  para traer los datos por primera vez
     useEffect( () => {
         const bringData = async () => {
             const response = await fetchData()
@@ -38,6 +46,8 @@ const UserDashboard = () => {
         };
         bringData();   
     }, []);
+
+    //Funcion para verificar si se puede acceder o no a dashboard
     useEffect(() => {
         //Verificar si hay algun estado en el location, o sino pa fuera
         if (location.state ===  null || location.state === undefined || !location.state.username ) {

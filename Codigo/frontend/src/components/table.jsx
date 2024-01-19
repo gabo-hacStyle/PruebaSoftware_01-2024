@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 
+//Componente de la tabla de valores
 const Table = ({data}) => {
 
     return (

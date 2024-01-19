@@ -1,7 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+// Este componente se renderiza cuando el usuario se registra exitosamente
 const UserCreated = () => {
+    // Navegar al login cuando oprima ok
     const navigate = useNavigate()
     const handleClick = () => {
         navigate('/login')

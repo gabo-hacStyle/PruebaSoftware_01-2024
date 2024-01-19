@@ -1,7 +1,12 @@
 import axios from "axios";
 
+
+//archivo para hacer las peticiones a la api con axios
+
 const baseUrl = 'http://localhost:8000'
 
+
+//Para traer los datos de la tabla 
 export const fetchData = async () => {
     try {
         const response = await axios.get(`${baseUrl}/data/`);
@@ -12,7 +17,7 @@ export const fetchData = async () => {
     }
 }
 
-
+//Para crear nuevo dato en la tabla
 export const postData = async () => {
     try {
         const response = await axios.post(`${baseUrl}/data/`);
@@ -24,7 +29,7 @@ export const postData = async () => {
 }
 
 
-
+//Para registrar user
 export const postUser = async (user) => {
     try {
         const response = await axios.post(`${baseUrl}/users/`, user);
@@ -35,6 +40,7 @@ export const postUser = async (user) => {
     }
 }
 
+//Para hacer login
 export const postLogin = async (credentials) => {
     try {
         const response = await axios.post(`${baseUrl}/login/`, credentials);

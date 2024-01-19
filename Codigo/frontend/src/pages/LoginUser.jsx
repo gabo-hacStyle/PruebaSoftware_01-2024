@@ -3,10 +3,13 @@ import { postLogin } from '../hooks/useGetApi';
 import { useNavigate, Link } from 'react-router-dom';
 const LoginUser = () => {
     const navigate = useNavigate();
+    // Estados para los campos del formulario
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    // Estados para mostrar los mensajes de error, de que los campos están vacíos
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    // Estado para mostrar el mensaje de error de credenciales inválidas
     const [invalidCredetials, setInvalidCredetials] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -40,8 +43,8 @@ const LoginUser = () => {
             ); // Pasar el nombre del usuario como prop a través del estado de la ruta
         } catch (error) {
             console.error(error);
-            console.log(error.response.data.error)
-
+            
+            // Verificar si el error es de credenciales inválidas
             if (error.response.data.error === "Invalid username or password") {
                 setInvalidCredetials(true);
             }
@@ -59,6 +62,7 @@ const LoginUser = () => {
                 
                 <h2 className='h2'>Login</h2>
                 <form onSubmit={handleSubmit}>
+                    {/* Se pone borde rojo si los campos están vacíos */}
                     <div>
                         <label htmlFor="username">Usuario</label>
                         <input
@@ -83,7 +87,7 @@ const LoginUser = () => {
                             style={{ borderColor: passwordError ? 'red' : '' }}
                         />
                     </div>
-                    
+                    {/* Mostrar mensaje de error si credenciales incorrectas */}
                     {
                         invalidCredetials && (
                             <p style={{ color: 'red' }}>Usuario o contraseña incorrectos</p>

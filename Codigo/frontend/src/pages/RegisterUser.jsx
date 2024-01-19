@@ -4,16 +4,20 @@ import UserCreated from '../modals/UserCreated';
 import { Link } from 'react-router-dom';
 
 const RegisterUser = () => {
+    // Estados para los campos del formulario de registro
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    //Estado para mostrar el modal de usuario creado
     const [showModal, setShowModal] = useState(false);
+    //Estados para mostrar los mensajes de error
     const [notSamePASS, setNotSamePASS] = useState(false);
     const [emailtaken, setEmailtaken] = useState(false);
     const [missingFields, setMissingFields] = useState(false);
     const [usernametaken, setUsernametaken] = useState(false);
 
+    // Funciones para manejar los cambios en los campos del formulario
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
@@ -30,11 +34,11 @@ const RegisterUser = () => {
         setEmail(e.target.value);
     }
 
-
+    // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Limpiar los mensajes de error
+        // Limpiar los mensajes de error que hayan quedado
         setNotSamePASS(false);
         setEmailtaken(false);
         setMissingFields(false);
@@ -50,16 +54,18 @@ const RegisterUser = () => {
             setNotSamePASS(true);
             return;
         }
+
+        //Enviar al server y esperar respuesta
         try {
             const response = await postUser({ username, password, email });
             if (response.message === "User created") {
+                //Mostrar el modal de usuario creado
                 setShowModal(true);
             }
         } catch (error) {
             console.error(error);
             // Verificar si el error de 'username' existe
             if (error.response.data.username) {
-                console.log(error.response.data.username[0]); // Imprime el primer error de 'username'
                 if (error.response.data.username[0] === "user with this username already exists.") {
                     setUsernametaken(true);
                 }
@@ -67,7 +73,6 @@ const RegisterUser = () => {
 
             // Verificar si el error de 'email' existe
             if (error.response.data.email) {
-                console.log(error.response.data.email[0]); // Imprime el primer error de 'email'
                 if (error.response.data.email[0] === "user with this email address already exists.") {
                     setEmailtaken(true);
                 }
